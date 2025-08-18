@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+\section*{ダイクストラのアルゴリズム：帰納法による正しさの証明}
+
+ダイクストラのアルゴリズムの正しさを帰納法を用いて証明する。  
+ここで、グラフ $G$ は入力グラフ、$s$ は始点、$\ell(uv)$ は辺 $u$ から $v$ への長さ、$V$ は頂点集合とする。
+
+\subsection*{アルゴリズム（Dijkstra(G, s))}
+
+\begin{itemize}
+  \item $\forall u \in V \setminus \{s\}$ に対して $d(u) \gets \infty$
+  \item $d(s) \gets 0$
+  \item $R \gets \emptyset$
+  \item \textbf{while} $R \neq V$:
+  \begin{itemize}
+    \item $d(u)$ が最小の $u \notin R$ を選ぶ
+    \item $R \gets R \cup \{u\}$
+    \item $u$ に隣接するすべての $v$ に対して:
+    \begin{itemize}
+      \item \textbf{if} $d(v) > d(u) + \ell(u, v)$:
+      \item \quad $d(v) \gets d(u) + \ell(u, v)$
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+アルゴリズムによるラベルを $d(v)$、始点から $v$ への最短距離を $\delta(v)$ とする。  
+すべての $v$ に対して $d(v) = \delta(v)$ を示す。
+
+\subsection*{補題：$\forall x \in R$, $d(x) = \delta(x)$}
+
+\textbf{帰納法による証明：}
+
+\textbf{基底ケース ($|R| = 1$):}  
+このとき $R = \{s\}$ なので $d(s) = 0 = \delta(s)$ は明らかに正しい。
+
+\textbf{帰納法の仮定：}  
+$u$ を最後に $R$ に追加された頂点とし、$R' = R \cup \{u\}$ とする。  
+仮定：すべての $x \in R'$ に対して $d(x) = \delta(x)$。
+
+\textbf{帰納ステップ：}  
+仮に $s$ から $u$ への最短経路を $Q$、その長さを $\ell(Q)$ とし、$\ell(Q) < d(u)$ と仮定する。  
+$Q$ は $R'$ 内から出発し、途中で $R'$ を出る必要がある。  
+最初に $R'$ を抜ける辺を $xy$、$Q$ の $s$ から $x$ までの部分経路を $Q_x$ とする。
+
+\[
+\ell(Q_x) + \ell(xy) \leq \ell(Q)
+\]
+
+帰納仮定より $d(x) \leq \ell(Q_x)$
+
+\[
+d(x) + \ell(xy) \leq \ell(Q)
+\]
+
+また $y$ は $x$ に隣接しており、更新されているので：
+
+\[
+d(y) \leq d(x) + \ell(xy)
+\]
+
+$u$ は最小の距離ラベルを持つため：
+
+\[
+d(u) \leq d(y)
+\]
+
+これらをまとめると：
+
+\[
+d(u) \leq d(y) \leq d(x) + \ell(xy) \leq \ell(Q) < d(u)
+\]
+
+矛盾が生じたため、そんな経路 $Q$ は存在しない。  
+よって $d(u) = \delta(u)$ が示された。
+
+\textbf{以上により、$R = V$ であればアルゴリズムは正しく動作する。}
+
+\end{document}
