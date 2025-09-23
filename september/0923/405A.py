@@ -1,0 +1,10 @@
+R,X = map(int,input().split())
+if X == 1:
+    if 1600 <= R <= 2999:
+        print("Yes")
+        exit()
+else:
+    if 1200 <= R <= 2399:
+        print("Yes")
+        exit()
+print("No")
